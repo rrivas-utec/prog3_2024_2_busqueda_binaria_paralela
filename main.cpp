@@ -4,6 +4,7 @@
 #include <random>
 #include <iterator>
 #include <thread>
+#include <type_traits>
 
 // Tomado de CPP Reference
 
@@ -105,6 +106,21 @@ void ejemplo_merge_sort() {
     print("v2: ", v2);
     print("v3: ", v3);
 }
+
+template <
+        typename Iterator,
+        typename T = typename std::iterator_traits<Iterator>::value_type>
+Iterator binary_search(Iterator left, Iterator right, T value) {
+    if (std::distance(left, right) <= 1) return right;
+    auto mid = std::next(left, std::distance(left, right) / 2);
+    if (*mid == value) return mid;
+    if (*mid > value)
+        return binary_search(left, std::prev(mid));
+    else
+        return binary_search(std::next(mid), right);
+}
+
+
 
 
 int main() {
